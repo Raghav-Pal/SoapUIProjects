@@ -1138,7 +1138,43 @@
 testRunner.testCase.testSuite.project.getTestSuiteByName('TestSuite1').getTestCaseByName('TestCase1').setTearDownScript('log.info "teardown for Test1"')
 
 log.info ("  >>  "+testRunner.testCase.getSetupScript());
-log.info ("  >>  "+testRunner.testCase.getTearDownScript());</script></con:config></con:testStep><con:setupScript>log.info "setup for Test1"</con:setupScript><con:tearDownScript>log.info "teardown for Test1"</con:tearDownScript><con:properties/></con:testCase><con:testCase id="32db0464-0ef7-4e19-b832-386d216c6bc4" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Selenium" searchProperties="true" disabled="true"><con:settings/><con:testStep type="groovy" name="RunSeleniumTest" id="9899ff58-dc9b-4dbc-b169-5d600560d75d"><con:settings/><con:config><script>import org.openqa.selenium.By;
+log.info ("  >>  "+testRunner.testCase.getTearDownScript());</script></con:config></con:testStep><con:testStep type="request" id="550f8fb2-42de-44ab-a773-604f5b6b207a" name="CountryCurrency"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CountryInfoServiceSoapBinding</con:interface><con:operation>CountryCurrency</con:operation><con:request name="CountryCurrency" id="1217f48e-53ff-4ca7-8ff6-25f59212114b"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://www.oorsprong.org/websamples.countryinfo">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <web:CountryCurrency>\r
+         <web:sCountryISOCode>IN</web:sCountryISOCode>\r
+      </web:CountryCurrency>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:assertion type="Simple Contains" id="c589b56b-1fe8-4ff9-a9bc-1965463fef66" name="Contains"><con:configuration><token>inr</token><ignoreCase>true</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:assertion type="XPath Match" id="9500d5e5-bf0d-41bc-affe-eb899804d408" name="XPath Match"><con:configuration><path>declare namespace soap='http://schemas.xmlsoap.org/soap/envelope/';
+declare namespace m='http://www.oorsprong.org/websamples.countryinfo';
+
+//m:sName</path><content>Rupees</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="XQuery Match" id="708063f3-4ea5-4a84-a337-d0f5d97591e5" name="XQuery Match"><con:configuration><path>declare namespace soap='http://schemas.xmlsoap.org/soap/envelope/';
+declare namespace m='http://www.oorsprong.org/websamples.countryinfo';
+
+//m:sISOCode</path><content>&lt;m:sISOCode xmlns:m="http://www.oorsprong.org/websamples.countryinfo">INR&lt;/m:sISOCode></content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="Invalid HTTP Status Codes" id="f0cfeb41-3de9-4b21-add2-60dc83c02c5f" name="Invalid HTTP Status Codes"><con:configuration><codes>401,500</codes></con:configuration></con:assertion><con:assertion type="SOAP Fault Assertion" id="bf15f9b1-8b01-4154-b231-3cd7809d0dc0" name="Not SOAP Fault"/><con:assertion type="SOAP Response" id="efcab7a0-26f8-49e3-8ed5-5b89463f74f2" name="SOAP Response"/><con:assertion type="Valid HTTP Status Codes" id="b69f6880-c9f5-4697-b1c4-d81beb9e7551" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="Response SLA Assertion" id="6ffa8eb2-ae6c-4999-b395-20fd95a5c314" name="Response SLA"><con:configuration><SLA>5000</SLA></con:configuration></con:assertion><con:assertion type="GroovyScriptAssertion" id="bffb7227-7f50-40e8-a84a-20c5fe7f326a" name="Script Assertion"><con:configuration><scriptText>
+//check response time
+assert messageExchange.timeTaken &lt; 5000
+
+//check for Endpoint
+def endpoint = "http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso"
+assert messageExchange.getEndpoint() == endpoint
+
+//check for header
+assert messageExchange.responseHeaders["Content-Length"] != null
+
+//check attachments
+assert messageExchange.responseAttachments.length == 0
+
+//validate response nodes
+def groovyUtils = new com.eviware.soapui.support.GroovyUtils( context )
+//def requsetHolder = groovyUtils.getXmlHolder( messageExchange.requestContent )
+def responseHolder = groovyUtils.getXmlHolder( messageExchange.responseContent )
+def currencyName = responseHolder.getNodeValue("//m:CountryCurrencyResult/m:sName")
+assert currencyName == "Rupees"
+
+//to get response
+def resp = messageExchange.responseContentAsXml.toString()
+</scriptText></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig action="http://www.oorsprong.org/websamples.countryinfo/CountryInfoServiceSoapType/CountryCurrencyRequest" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:setupScript>log.info "setup for Test1"</con:setupScript><con:tearDownScript>log.info "teardown for Test1"</con:tearDownScript><con:properties/></con:testCase><con:testCase id="32db0464-0ef7-4e19-b832-386d216c6bc4" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Selenium" searchProperties="true" disabled="true"><con:settings/><con:testStep type="groovy" name="RunSeleniumTest" id="9899ff58-dc9b-4dbc-b169-5d600560d75d"><con:settings/><con:config><script>import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -1220,7 +1256,34 @@ assert json.name.toString() == "[Taiwan]"
 //to get the Test Step Name
 testStepName = messageExchange.modelItem.testStep.name
 log.info testStepName
-xmlHold = messageExchange.responseContentAsXml.toString()  //to store the response as Xml string</scriptText></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="countryName" value="taiwan" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>countryName</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:properties/><con:setupScript>log.info ("This runs before TestSuite1")</con:setupScript><con:tearDownScript>log.info ("This runs after TestSuite1")</con:tearDownScript></con:testSuite><con:testSuite id="ae7012ca-53e3-4929-b384-07e682d411f5" name="TestSuite2"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="1fad7b69-143f-4c83-a936-4e158221dc93" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Assertions" searchProperties="true"><con:settings/><con:testStep type="request" id="5e1b7cea-b24e-453f-ba67-1b40488e13b9" name="CountryCurrency"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CountryInfoServiceSoapBinding</con:interface><con:operation>CountryCurrency</con:operation><con:request name="CountryCurrency" id="1217f48e-53ff-4ca7-8ff6-25f59212114b"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://www.oorsprong.org/websamples.countryinfo">\r
+xmlHold = messageExchange.responseContentAsXml.toString()  //to store the response as Xml string</scriptText></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="countryName" value="taiwan" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>countryName</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script" id="2ecac6db-c523-496a-ac99-351c6a170d61"><con:settings/><con:config><script>//How to access any test step within the same test case
+testRunner.testCase.getTestStepByName("CountryCurrency");
+
+//How to access property of any Properties step within the same Test Case.
+testRunner.testCase.getTestStepByName("Properties").getPropertyValue("Name");
+
+//How to access step from any other TestSuite / TestCase
+ project = testRunner.testCase.testSuite.project ;
+ tcase = project.testSuites["TestSuite2"].testCases["Assertions"] ; 
+ tstep = tcase.getTestStepByName("MyProperties");
+ tstep.getPropertyValue("Location")
+ tstep.setPropertyValue("Location","US");
+ tstep.getPropertyValue("Location")
+
+ //Get list of all steps in a test case
+ // This will get the list of all testSteps in the testCase
+def testSteps = context.testCase.getTestStepList() 
+testSteps.each{
+// This block will loop through the test steps and print the test step name to the log
+log.info(it.name)
+}
+
+//Run TestStep of another TestCase
+def tCase = testRunner.testCase.testSuite.testCases["TestCase1"]
+def tStep = tCase.testSteps["CountryCurrency"]
+tStep.run(testRunner, context)
+
+</script></con:config></con:testStep><con:testStep type="properties" name="Properties" id="a1914c24-8ce9-4d70-bd1a-c7dd048bc6c2"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>Name</con:name><con:value>Raghav</con:value></con:property></con:properties></con:config></con:testStep><con:properties/></con:testCase><con:properties/><con:setupScript>log.info ("This runs before TestSuite1")</con:setupScript><con:tearDownScript>log.info ("This runs after TestSuite1")</con:tearDownScript></con:testSuite><con:testSuite id="ae7012ca-53e3-4929-b384-07e682d411f5" name="TestSuite2"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="1fad7b69-143f-4c83-a936-4e158221dc93" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Assertions" searchProperties="true"><con:settings/><con:testStep type="request" id="5e1b7cea-b24e-453f-ba67-1b40488e13b9" name="CountryCurrency"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CountryInfoServiceSoapBinding</con:interface><con:operation>CountryCurrency</con:operation><con:request name="CountryCurrency" id="1217f48e-53ff-4ca7-8ff6-25f59212114b"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://www.oorsprong.org/websamples.countryinfo">\r
    <soapenv:Header/>\r
    <soapenv:Body>\r
       <web:CountryCurrency>\r
@@ -1231,7 +1294,7 @@ xmlHold = messageExchange.responseContentAsXml.toString()  //to store the respon
 declare namespace ns1='http://www.oorsprong.org/websamples.countryinfo';
 declare namespace soap='http://schemas.xmlsoap.org/soap/envelope/';
 declare namespace ns1='http://www.oorsprong.org/websamples.countryinfo';
-</con:targetPath><con:upgraded>true</con:upgraded></con:transfers></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties/><con:afterLoadScript>def su = new File("C:/Users/Raghav Pal/Desktop/setup.txt").text
+</con:targetPath><con:upgraded>true</con:upgraded></con:transfers></con:config></con:testStep><con:testStep type="properties" name="MyProperties" id="144d578c-045e-4ba3-8c89-5f02f212652d"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>Location</con:name><con:value>US</con:value></con:property></con:properties></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties/><con:afterLoadScript>def su = new File("C:/Users/Raghav Pal/Desktop/setup.txt").text
 def td  = new File("C:/Users/Raghav Pal/Desktop/teardown.txt").text
 
 project.getTestSuiteList().each { testSuite ->
